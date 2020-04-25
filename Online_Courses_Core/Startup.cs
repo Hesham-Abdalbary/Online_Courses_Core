@@ -54,6 +54,8 @@ namespace Online_Courses_Core
             services.AddControllers();
             services.AddScoped<CourseRepository, CourseRepository>();
             services.AddScoped<CourseService, CourseService>();
+            services.AddScoped<MessageRepository, MessageRepository>();
+            services.AddScoped<MessageService, MessageService>();
             services.AddTransient<Context, Context>();
         }
 
