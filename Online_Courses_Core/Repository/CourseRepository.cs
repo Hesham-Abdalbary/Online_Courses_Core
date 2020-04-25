@@ -17,13 +17,16 @@ namespace Online_Courses_Core.Repository
 
         public List<Course> GetAll()
         {
-            var courses = _context.Courses.ToList();
+            var courses = _context.Courses
+                .Include(c => c.CourseLanguage)
+                .Include(c => c.UserCourse)
+                .ToList();
             return courses;
         }
 
         public List<Course> GetAllByCatId(int catId)
         {
-            var courses = _context.Courses.Where(c => c.CourseLanguageID == catId).ToList();
+            var courses = _context.Courses.Include( c => c.CourseLanguage).Where(c => c.CourseLanguageID == catId).ToList();
             return courses;
         }
 

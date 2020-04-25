@@ -17,7 +17,7 @@ namespace Online_Courses_Core.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Data Source=ACER\HBARY;Initial Catalog=Online_Courses_Core;Integrated Security=True");
+            optionsBuilder.UseSqlServer(@"Data Source=.;Initial Catalog=Online_Courses_Core;Integrated Security=True");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
