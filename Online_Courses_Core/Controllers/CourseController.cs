@@ -21,17 +21,30 @@ namespace Online_Courses_Core.Controllers
         }
 
         // GET api/values
+        //[HttpGet]
+        //public ActionResult<IEnumerable<CourseDto>> Get()
+        //{
+        //    return _courseService.GetAll(ServerRootPath);
+        //}
+
         [HttpGet]
-        public ActionResult<IEnumerable<CourseDto>> Get()
+        public ActionResult<IEnumerable<CourseDto>> Get([FromQuery] int pageSize, [FromQuery]int pageIndex )
         {
-            return _courseService.GetAll(ServerRootPath);
+            PagingModel model = new PagingModel();
+            model.pageSize = pageSize;
+            model.pageIndex = pageIndex;
+
+            return _courseService.GetAll(ServerRootPath ,model );
         }
+
+       
 
         // GET api/values/5
         [HttpGet("{id}")]
         public ActionResult<CourseDto> Get(int id)
         {
-            return _courseService.GetByID(id, ServerRootPath);
+            var course = _courseService.GetByID(id, ServerRootPath);
+            return course;
         }
 
         // GET api/values/5

@@ -24,4 +24,12 @@ namespace Online_Courses_Core.ViewModels
         public virtual List<CourseFileDto> Files { get; set; }
         public virtual List<UserCourseDto> UserCourse { get; set; }
     }
+
+
+    public class PagingModel
+    {
+        public int pageSize { get; set; }
+
+        public int pageIndex { get; set; }
+    }
 }

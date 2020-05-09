@@ -23,11 +23,21 @@ namespace Online_Courses_Core.Service
             _hostingEnvironment = hostingEnvironment;
         }
 
-        public List<CourseDto> GetAll(string rootPath)
+        //public List<CourseDto> GetAll(string rootPath)
+        //{
+        //    var courses = _repo.GetAll();
+        //    var coursesModels = Mapper.Map<List<Course>, List<CourseDto>>(courses);
+        //    coursesModels = coursesModels.Select(p => { p.ImagePath = rootPath + p.ImagePath; return p; }).ToList();
+        //    return coursesModels;
+        //}
+
+        public List<CourseDto> GetAll(string rootPath, PagingModel model)
         {
             var courses = _repo.GetAll();
             var coursesModels = Mapper.Map<List<Course>, List<CourseDto>>(courses);
-            coursesModels = coursesModels.Select(p => { p.ImagePath = rootPath + p.ImagePath; return p; }).ToList();
+            coursesModels = coursesModels.Select(p => { p.ImagePath = rootPath + p.ImagePath; return p; })
+                    .Skip((model.pageIndex - 1) * model.pageSize)
+                    .Take(model.pageSize).ToList();
             return coursesModels;
         }
 
