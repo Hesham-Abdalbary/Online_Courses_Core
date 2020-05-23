@@ -9,9 +9,17 @@ namespace Online_Courses_Core.Models
 {
     public class User : IdentityUser
     {
+        public User(string userName, string email,string password)
+        {
+            // this.UserName = name;
+            this.UserName = userName;
+            this.Email = email;
+            this.Password = password;
+        }
+
         [Key]
         public bool IsApproved { get; set; }
-        public string Name { get; set; }
+       // public string UserName { get; set; }
         public string Password { get; set; }
         public string Role { get; set; }
         public string MobileNumber { get; set; }

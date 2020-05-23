@@ -32,11 +32,19 @@ namespace Online_Courses_Core
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<Context>();
             services.AddIdentity<User, ApplicationRole>()
             .AddEntityFrameworkStores<Context>();
+            services.AddScoped<CourseRepository, CourseRepository>();
+            services.AddScoped<CourseService, CourseService>();
+            services.AddScoped<MessageRepository, MessageRepository>();
+            services.AddScoped<MessageService, MessageService>();
+
+            services.AddScoped<UserService, UserService>();
+            services.AddScoped<UserRepository, UserRepository>();
             MappingConfig.RegisterMapps();
             services.AddCors();
-            services.AddDbContext<Context>();
+           
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
@@ -51,12 +59,11 @@ namespace Online_Courses_Core
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
                 };
             });
-            services.AddControllers();
-            services.AddScoped<CourseRepository, CourseRepository>();
-            services.AddScoped<CourseService, CourseService>();
-            services.AddScoped<MessageRepository, MessageRepository>();
-            services.AddScoped<MessageService, MessageService>();
+
             services.AddTransient<Context, Context>();
+            services.AddControllers();
+            services.AddMvc();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -78,13 +85,31 @@ namespace Online_Courses_Core
 
             app.UseAuthorization();
 
-            app.UseAuthentication();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
             app.UseStaticFiles();
+
+            app.UseAuthentication();
+        }
+
+        private void configureAuthentication(IServiceCollection services)
+        {
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+                    {
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateIssuer = true,
+                            ValidateAudience = true,
+                            ValidateLifetime = true,
+                            ValidateIssuerSigningKey = true,
+                            ValidIssuer = Configuration["Jwt:Issuer"],
+                            ValidAudience = Configuration["Jwt:Issuer"],
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                        };
+                    });
         }
     }
 }
